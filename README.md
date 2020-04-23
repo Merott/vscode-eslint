@@ -1,3 +1,41 @@
+# Always Show Rule Failures As Warnings
+
+This is a fork of [`vscode-eslint`](https://github.com/microsoft/vscode-eslint), hacked to always show rule failures as warnings—for my _own_ convenience.
+
+The original author, [@dbaeumer](https://github.com/dbaeumer), has [his objections](https://github.com/microsoft/vscode-eslint/pull/561) to providing an option within the extension, so until there's a better solution, this hack will have to do.
+
+_You'll need to redo the patch every time that the original extension is updated!_ 🤷🏻‍♂️
+
+The easiest way to apply the hack is actually not to use this repo at all. Instead, patch the installed extension with a simple text replacement:
+
+```
+cd ~/.vscode/extensions/dbaeumer.vscode-eslint-x.x.x/server/out
+
+sed -i -e 's/switch(e){case 1:return i.DiagnosticSeverity.Warning;/return i.DiagnosticSeverity.Warning;switch(e){case 1:return i.DiagnosticSeverity.Warning;/g' ./eslintServer.js
+```
+
+But if you must, or a future update breaks that dumb text replacement…
+
+Update this repo with the latest from dbaeumer:
+
+```
+git remote add dbaeumer git@github.com:microsoft/vscode-eslint
+git fetch dbaeumer
+git merge dbaeumer/master -m 'chore: merge latest from @dbaeumer'
+```
+
+Then, run:
+
+```
+./node_modules/.bin/webpack --mode production --config ./server/webpack.config.js
+```
+
+Finally, copy and overwrite:
+
+```
+./server/out/eslintServer.js -> ~/.vscode/extensions/dbaeumer.vscode-eslint-x.x.x/server/out/eslintServer.js
+```
+
 # VS Code ESLint extension
 
 [![Build Status](https://dev.azure.com/ms/vscode-eslint/_apis/build/status/Microsoft.vscode-eslint)](https://dev.azure.com/ms/vscode-eslint/_build/latest?definitionId=18)
@@ -53,7 +91,7 @@ If you are using an ESLint extension version < 2.x then please refer to the sett
 This extension contributes the following variables to the [settings](https://code.visualstudio.com/docs/customization/userandworkspace):
 
 - `eslint.enable`: enable/disable ESLint. Is enabled by default.
-- `eslint.debug`: enables ESLint's debug mode (same as --debug  command line option). Please see the ESLint output channel for the debug output. This options is very helpful to track down configuration and installation problems with ESLint since it provides verbose information about how ESLint is validating a file.
+- `eslint.debug`: enables ESLint's debug mode (same as --debug command line option). Please see the ESLint output channel for the debug output. This options is very helpful to track down configuration and installation problems with ESLint since it provides verbose information about how ESLint is validating a file.
 - `eslint.lintTask.enable`: whether the extension contributes a lint task to lint a whole workspace folder.
 - `eslint.lintTask.options`: Command line options applied when running the task for linting the whole workspace (https://eslint.org/docs/user-guide/command-line-interface).
   An example to point to a custom `.eslintrc.json` file and a custom `.eslintignore` is:
@@ -81,7 +119,7 @@ This extension contributes the following variables to the [settings](https://cod
   - `[{ "mode": "location" }]` (@since 2.0.0): instructs ESLint to uses the workspace folder location or the file location (if no workspace folder is open) as the working directory. This is the default and is the same strategy as used in older versions of the ESLint extension (1.9.x versions).
   - `[{ "mode": "auto" }]` (@since 2.0.0): instructs ESLint to infer a working directory based on the location of `package.json`, `.eslintignore` and `.eslintrc*` files. This might work in many cases but can lead to unexpected results as well.
   - `string[]`: an array of working directories to use.
-  Consider the following directory layout:
+    Consider the following directory layout:
   ```
   root/
     client/
@@ -101,7 +139,7 @@ This extension contributes the following variables to the [settings](https://cod
 - `eslint.codeAction.disableRuleComment` - object with properties:
   - `enable` - show disable lint rule in the quick fix menu. `true` by default.
   - `location` - choose to either add the `eslint-disable` comment on the `separateLine` or `sameLine`. `separateLine` is the default.
-  Example:
+    Example:
   ```json
   { "enable": true, "location": "sameLine" }
   ```

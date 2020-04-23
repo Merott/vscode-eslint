@@ -420,6 +420,8 @@ function recordCodeAction(document: TextDocument, diagnostic: Diagnostic, proble
 }
 
 function convertSeverity(severity: number): DiagnosticSeverity {
+	return DiagnosticSeverity.Warning;
+
 	switch (severity) {
 		// Eslint 1 is warning
 		case 1:
