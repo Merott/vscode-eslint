@@ -6,15 +6,21 @@ The original author, [@dbaeumer](https://github.com/dbaeumer), has [his objectio
 
 _You'll need to redo the patch every time that the original extension is updated!_ 🤷🏻‍♂️
 
-The easiest way to apply the hack is actually not to use this repo at all. Instead, patch the installed extension with a simple text replacement:
+The easiest way to apply the hack is actually not to use this repo at all. Instead, patch the installed extension with a simple text replacement. If you're on a Mac, use this:
 
-```
-cd ~/.vscode/extensions/dbaeumer.vscode-eslint-x.x.x/server/out
+```sh
+cd ~/.vscode/extensions/dbaeumer.vscode-eslint-{VERSION}/server/out
 
+# replace: switch(e){case 1:return i.DiagnosticSeverity.Warning;
+# with: return i.DiagnosticSeverity.Warning;switch(e){case 1:return i.DiagnosticSeverity.Warning;
 sed -i -e 's/switch(e){case 1:return i.DiagnosticSeverity.Warning;/return i.DiagnosticSeverity.Warning;switch(e){case 1:return i.DiagnosticSeverity.Warning;/g' ./eslintServer.js
 ```
 
-But if you must, or a future update breaks that dumb text replacement…
+If you're not on a Mac, I'm sure you can figure out how to adjust the above for your own system or apply the change by hand.
+
+---
+
+But, if you must, or a future update breaks that dumb text replacement…
 
 Clone the repo, then:
 
