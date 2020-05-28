@@ -16,21 +16,18 @@ sed -i -e 's/switch(e){case 1:return i.DiagnosticSeverity.Warning;/return i.Diag
 
 But if you must, or a future update breaks that dumb text replacement…
 
-Update this repo with the latest from dbaeumer:
+Clone the repo, then:
 
 ```
+git checkout failures-as-warnings
 git remote add dbaeumer git@github.com:microsoft/vscode-eslint
 git fetch dbaeumer
 git merge dbaeumer/master -m 'chore: merge latest from @dbaeumer'
-```
-
-Then, run:
-
-```
+npm i
 ./node_modules/.bin/webpack --mode production --config ./server/webpack.config.js
 ```
 
-Finally, copy and overwrite:
+Then, copy and overwrite:
 
 ```
 ./server/out/eslintServer.js -> ~/.vscode/extensions/dbaeumer.vscode-eslint-x.x.x/server/out/eslintServer.js
