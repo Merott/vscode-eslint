@@ -25,7 +25,6 @@ But, if you must, or a future update breaks that dumb text replacement…
 Clone the repo, then:
 
 ```
-git checkout failures-as-warnings
 git remote add dbaeumer git@github.com:microsoft/vscode-eslint
 git fetch dbaeumer
 git merge dbaeumer/master -m 'chore: merge latest from @dbaeumer'
